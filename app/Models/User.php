@@ -53,4 +53,11 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Conversation::class,'conversation_user');
     }
+
+    public function unreadMessages()
+    {
+        return $this->hasManyThrough(Message::class, Conversation::class)
+                ->where('is_read', false)
+                ->where('user_id', '!=', $this->id);
+    }
 }
